@@ -51,4 +51,26 @@ public class PrivilegeServiceImpl implements PrivilegeService {
         privilegeDto.setId(privilege.getId());
         return privilegeDto;
     }
+
+    @Override
+    public PrivilegeDto update(PrivilegeDto privilegeDto) {
+        Optional<Privilege> privilege = privilegeRepository.findById(privilegeDto.getId());
+        if(!privilege.isPresent()){
+            throw new IllegalArgumentException("Privilege not found");
+        }
+        privilege.get().setName(privilegeDto.getName());
+        privilege.get().setDescription(privilegeDto.getDescription());
+        privilegeRepository.save(privilege.get());
+        return privilegeDto;
+    }
+
+    @Override
+    public Boolean delete(Long id) {
+        Optional<Privilege> privilege = privilegeRepository.findById(id);
+        if(!privilege.isPresent()){
+            throw new IllegalArgumentException("Privilege not found");
+        }
+        privilegeRepository.delete(privilege.get());
+        return true;
+    }
 }

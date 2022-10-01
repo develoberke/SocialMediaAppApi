@@ -21,7 +21,7 @@ import java.util.Set;
 @Data
 @Builder
 @Entity
-@Table(name = "roles")
+@Table(name = "roles", uniqueConstraints = {@UniqueConstraint(columnNames = "name")})
 
 @SQLDelete(sql = "UPDATE roles SET is_deleted = true WHERE id =?")
 @Where(clause = "is_deleted=false")

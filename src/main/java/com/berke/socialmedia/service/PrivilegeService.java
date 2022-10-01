@@ -11,4 +11,8 @@ public interface PrivilegeService {
     PrivilegeDto getById(Long id);
 
     PrivilegeDto save(PrivilegeDto privilegeDto);
+
+    PrivilegeDto update(PrivilegeDto privilegeDto);
+
+    Boolean delete(Long id);
 }

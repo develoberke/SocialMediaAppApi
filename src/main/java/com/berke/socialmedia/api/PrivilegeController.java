@@ -37,4 +37,14 @@ public class PrivilegeController {
     public ResponseEntity<PrivilegeDto> save(@RequestBody PrivilegeDto privilegeDto){
         return ResponseEntity.ok(privilegeService.save(privilegeDto));
     }
+
+    @PutMapping
+    public  ResponseEntity<PrivilegeDto> update(@RequestBody PrivilegeDto privilegeDto){
+        return ResponseEntity.ok(privilegeService.update(privilegeDto));
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Boolean> delete(@PathVariable Long id){
+        return ResponseEntity.ok(privilegeService.delete(id));
+    }
 }

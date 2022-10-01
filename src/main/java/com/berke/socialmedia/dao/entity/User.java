@@ -1,6 +1,5 @@
 package com.berke.socialmedia.dao.entity;
 
-import ch.qos.logback.classic.db.names.ColumnName;
 import com.berke.socialmedia.dao.entity.common.BaseEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -12,7 +11,6 @@ import javax.persistence.*;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Table;
-import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
