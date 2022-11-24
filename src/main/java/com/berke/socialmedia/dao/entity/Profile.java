@@ -25,7 +25,6 @@ import java.util.Set;
 public class Profile extends BaseEntity {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
@@ -41,7 +40,9 @@ public class Profile extends BaseEntity {
     @Column(name = "picture")
     private byte[] picture;
 
-    @OneToOne(mappedBy = "profile", fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @OneToOne(fetch = FetchType.LAZY)
+    @MapsId
+    @JoinColumn(name = "id")
     private User user;
 
     @Column(name = "level")

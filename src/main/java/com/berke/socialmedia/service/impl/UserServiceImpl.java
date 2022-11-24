@@ -116,11 +116,9 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         user.addRole(roleRepository.findByName("ROLE_MEMBER"));
         profile.setFirstName(userRegisterDto.getFirstName());
         profile.setLastName(userRegisterDto.getLastName());
-        profile = profileRepository.save(profile);
-        if(!userRepository.findById(profile.getId()).isPresent()){
-            user.setId(profile.getId());
-        }
+        profile.setUser(user);
         user.setProfile(profile);
+        //profileRepository.save(profile);
         user = userRepository.save(user);
         return modelMapper.map(user, UserDto.class);
     }

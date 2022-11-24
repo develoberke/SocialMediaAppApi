@@ -1,9 +1,11 @@
 package com.berke.socialmedia.data;
 
 import com.berke.socialmedia.dao.PrivilegeRepository;
+import com.berke.socialmedia.dao.ProfileRepository;
 import com.berke.socialmedia.dao.RoleRepository;
 import com.berke.socialmedia.dao.UserRepository;
 import com.berke.socialmedia.dao.entity.Privilege;
+import com.berke.socialmedia.dao.entity.Profile;
 import com.berke.socialmedia.dao.entity.Role;
 import com.berke.socialmedia.dao.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +34,9 @@ public class DataInitCreateUserRole implements CommandLineRunner {
     @Autowired
     private PrivilegeRepository privilegeRepository;
 
+    @Autowired
+    private ProfileRepository profileRepository;
+
     @Override
     public void run(String... args) throws Exception {
 
@@ -50,6 +55,11 @@ public class DataInitCreateUserRole implements CommandLineRunner {
         User dbBothUser = userRepository.findByUsername("both");
         User dbNoneUser = userRepository.findByUsername("noneRole");
 
+        Profile profile1 = Profile.builder().firstName("Berke").lastName("Yıldırım").level(1L).build();
+        Profile profile2 = Profile.builder().firstName("Berke2").lastName("Yıldırım").level(1L).build();
+        Profile profile3 = Profile.builder().firstName("Berke3").lastName("Yıldırım").level(1L).build();
+        Profile profile4 = Profile.builder().firstName("Berke4").lastName("Yıldırım").level(1L).build();
+
         if (dbAdminUser==null) {
             Collection<Role> myroles = new ArrayList<Role>();
             User adminuser = User.builder()
@@ -57,7 +67,10 @@ public class DataInitCreateUserRole implements CommandLineRunner {
                     .password(bCryptPasswordEncoder.encode("password"))
                     .email("admin@berke.xyz")
                     .roles(Set.of(adminRole))
+                    .profile(profile2)
                     .build();
+            profile2.setUser(adminuser);
+            profileRepository.save(profile2);
             userRepository.save(adminuser);
         }
 
@@ -67,7 +80,10 @@ public class DataInitCreateUserRole implements CommandLineRunner {
                     .password(bCryptPasswordEncoder.encode("password"))
                     .email("member@berke.xyz")
                     .roles(Set.of(memberRole))
+                    .profile(profile1)
                     .build();
+            profile1.setUser(memberUser);
+            profileRepository.save(profile1);
             userRepository.save(memberUser);
         }
 
@@ -80,7 +96,10 @@ public class DataInitCreateUserRole implements CommandLineRunner {
                     .password(bCryptPasswordEncoder.encode("password"))
                     .email("both@berke.xyz")
                     .roles(myroles)
+                    .profile(profile3)
                     .build();
+            profile3.setUser(bothUser);
+            profileRepository.save(profile3);
             userRepository.save(bothUser);
         }
 
@@ -91,7 +110,10 @@ public class DataInitCreateUserRole implements CommandLineRunner {
                     .password(bCryptPasswordEncoder.encode("password"))
                     .email("noneRole@berke.xyz")
                     .roles(myroles)
+                    .profile(profile4)
                     .build();
+            profile4.setUser(noneRoleUser);
+            profileRepository.save(profile4);
             userRepository.save(noneRoleUser);
         }
 
