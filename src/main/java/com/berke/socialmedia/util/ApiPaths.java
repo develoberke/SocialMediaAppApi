@@ -24,5 +24,8 @@ public class ApiPaths {
         public static final String CTRL = BASE_PATH + "/profiles";
     }
 
+    public static final class PostCtrl{
+        public static final String CTRL = BASE_PATH + "/posts";
+    }
 
 }

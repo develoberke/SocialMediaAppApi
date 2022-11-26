@@ -9,5 +9,6 @@ public interface ProfileService {
 
     List<ProfileDto> getAll();
 
+    ProfileDto getById(Long id);
     ProfileDto update(Long id, ProfileDto profileDto);
 }

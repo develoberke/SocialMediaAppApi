@@ -4,6 +4,7 @@ package com.berke.socialmedia.api;
 import com.berke.socialmedia.dto.PrivilegeDto;
 import com.berke.socialmedia.service.PrivilegeService;
 import com.berke.socialmedia.util.ApiPaths;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -14,6 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(ApiPaths.PrivilegeCtrl.CTRL)
+@SecurityRequirement(name = "Bearer Authentication")
 public class PrivilegeController {
 
     private final PrivilegeService privilegeService;

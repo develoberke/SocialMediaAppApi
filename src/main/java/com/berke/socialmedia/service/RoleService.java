@@ -12,5 +12,8 @@ public interface RoleService {
 
     RoleDto save(RoleDto roleDto);
 
+    RoleDto update(Long id, RoleDto roleDto);
+    void delete(Long id);
+
     RoleDto addPrivilegeById(Long roleId, Long privilegeId);
 }

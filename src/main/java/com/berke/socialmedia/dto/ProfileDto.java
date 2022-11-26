@@ -20,10 +20,9 @@ public class ProfileDto {
 
     private Long level;
 
+    //dto'da following ve followersler döngü oluşturup sıkıntı çıkarabilir
     private Set<ProfileDto> following;
 
     private Set<ProfileDto> followers;
-
-    private Set<PostDto> posts;
 
 }

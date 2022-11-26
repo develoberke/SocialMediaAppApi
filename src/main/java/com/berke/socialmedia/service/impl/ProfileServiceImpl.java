@@ -34,6 +34,15 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
+    public ProfileDto getById(Long id){
+        Optional<Profile> profile = profileRepository.findById(id);
+        if(!profile.isPresent()){
+            throw new IllegalArgumentException("Profile not found");
+        }
+        return modelMapper.map(profile.get(), ProfileDto.class);
+    }
+
+    @Override
     public ProfileDto update(Long id, ProfileDto profileDto) {
         Optional<Profile> profile = profileRepository.findById(id);
         if(!profile.isPresent())

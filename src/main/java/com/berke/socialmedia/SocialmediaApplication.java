@@ -17,8 +17,9 @@ public class SocialmediaApplication {
 	private static ModelMapper getModelMapper() {
 		ModelMapper modelMapper= new ModelMapper();
 		modelMapper.getConfiguration()
-				.setMatchingStrategy(MatchingStrategies.STRICT);
+				.setMatchingStrategy(MatchingStrategies.STANDARD);
 		return modelMapper;
 	}
+
 
 }

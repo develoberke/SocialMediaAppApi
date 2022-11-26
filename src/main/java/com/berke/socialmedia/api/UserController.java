@@ -4,6 +4,7 @@ package com.berke.socialmedia.api;
 import com.berke.socialmedia.dto.UserDto;
 import com.berke.socialmedia.service.UserService;
 import com.berke.socialmedia.util.ApiPaths;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,6 +14,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping(ApiPaths.UserCtrl.CTRL)
+@SecurityRequirement(name = "Bearer Authentication")
 public class UserController {
 
     private final UserService userService;

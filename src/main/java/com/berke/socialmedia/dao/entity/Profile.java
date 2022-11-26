@@ -1,10 +1,9 @@
 package com.berke.socialmedia.dao.entity;
 
 import com.berke.socialmedia.dao.entity.common.BaseEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
+import org.hibernate.annotations.NotFound;
+import org.hibernate.annotations.NotFoundAction;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
@@ -12,7 +11,8 @@ import javax.persistence.*;
 import java.util.List;
 import java.util.Set;
 
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
@@ -58,6 +58,8 @@ public class Profile extends BaseEntity {
 
 
     @OneToMany(mappedBy = "profile")
+    @NotFound(
+            action = NotFoundAction.IGNORE)
     private Set<Post> posts;
 
 

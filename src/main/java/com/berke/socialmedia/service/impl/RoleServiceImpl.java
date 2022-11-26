@@ -54,6 +54,31 @@ public class RoleServiceImpl implements RoleService {
         return roleDto;
     }
 
+
+    @Override
+    public RoleDto update(Long id, RoleDto roleDto) {
+        Optional<Role> role = roleRepository.findById(id);
+        if(!role.isPresent())
+            throw new IllegalArgumentException("Role not found");
+
+        if(roleDto.getName() != null)
+            role.get().setName(roleDto.getName());
+        if(roleDto.getDescription() != null)
+            role.get().setDescription(roleDto.getDescription());
+
+        return modelMapper.map(roleRepository.save(role.get()), RoleDto.class);
+    }
+
+
+    @Override
+    public void delete(Long id) {
+        Optional<Role> role = roleRepository.findById(id);
+        if(!role.isPresent())
+            throw new IllegalArgumentException("Role not found");
+
+        roleRepository.delete(role.get());
+    }
+
     @Override
     public RoleDto addPrivilegeById(Long roleId, Long privilegeId) {
         Optional<Role> role = roleRepository.findById(roleId);
