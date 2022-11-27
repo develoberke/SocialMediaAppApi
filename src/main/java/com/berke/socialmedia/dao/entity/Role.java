@@ -41,7 +41,7 @@ public class Role extends BaseEntity {
     @ManyToMany(mappedBy = "roles")
     private Collection<User> user;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(name = "roles_privileges",
     joinColumns = @JoinColumn(name = "role_id", referencedColumnName = "id"),
     inverseJoinColumns = @JoinColumn(name = "privilege_id",referencedColumnName = "id"))
@@ -49,6 +49,10 @@ public class Role extends BaseEntity {
 
     public void addPrivilege(Privilege privilege){
         this.privileges.add(privilege);
+    }
+
+    public void removePrivilege(Privilege privilege){
+        this.privileges.remove(privilege);
     }
 
 }

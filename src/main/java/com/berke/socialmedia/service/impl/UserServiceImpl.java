@@ -18,11 +18,13 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityNotFoundException;
 import java.util.*;
 
 @Service(value = "userService")
+@Transactional
 public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
@@ -123,24 +125,21 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return modelMapper.map(user, UserDto.class);
     }
 
+
     @Override
-    public UserDto addRoleById(Long userId, Long roleId) {
-        Optional<User> user = userRepository.findById(userId);
-        Optional<Role> role  = roleRepository.findById(roleId);
-        if(!user.isPresent() || !role.isPresent()){
-            throw new IllegalArgumentException("User or role not found");
+    public UserDto update(Long id, UserDto userDto) {
+        Optional<User> user = userRepository.findById(id);
+        if(!user.isPresent())
+            throw new IllegalArgumentException("User Not Found");
+
+        if(userDto.getEmail() != null){
+            user.get().setEmail(userDto.getEmail());
         }
-        boolean isAdded = false;
-        for(Role r : user.get().getRoles()){
-            if (r.getName().equals(role.get().getName()))
-                isAdded = true;
+        if(userDto.getUsername() != null){
+            user.get().setUsername(userDto.getUsername());
         }
-        if(!isAdded){
-            user.get().addRole(role.get());
-            userRepository.save(user.get());
-            return modelMapper.map(user.get(), UserDto.class);
-        }
-        throw new IllegalArgumentException("Role is already added");
+        return modelMapper.map(userRepository.save(user.get()), UserDto.class);
+
     }
 
     @Override
@@ -155,5 +154,28 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         }
     }
 
+    @Override
+    public UserDto addRoleById(Long userId, Long roleId) {
+        Optional<User> user = userRepository.findById(userId);
+        Optional<Role> role  = roleRepository.findById(roleId);
+        if(!user.isPresent() || !role.isPresent()){
+            throw new IllegalArgumentException("User or role not found");
+        }
 
+        user.get().addRole(role.get());
+        userRepository.save(user.get());
+        return modelMapper.map(user.get(), UserDto.class);
+    }
+
+    @Override
+    public Boolean removeRoleById(Long userId, Long roleId) {
+        Optional<User> user = userRepository.findById(userId);
+        Optional<Role> role  = roleRepository.findById(roleId);
+        if(!user.isPresent() || !role.isPresent()){
+            throw new IllegalArgumentException("User or role not found");
+        }
+        user.get().removeRole(role.get());
+        userRepository.save(user.get());
+        return Boolean.TRUE;
+    }
 }

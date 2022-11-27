@@ -86,17 +86,10 @@ public class RoleServiceImpl implements RoleService {
         if(!role.isPresent() || !privilege.isPresent()){
             throw new IllegalArgumentException("Role or Privilege not found");
         }
-        boolean isAdded = false;
-        for(Privilege p : role.get().getPrivileges()){
-            if(p.getName() == privilege.get().getName())
-                isAdded = true;
-        }
-        if(!isAdded){
-            role.get().addPrivilege(privilege.get());
-            roleRepository.save(role.get());
-            return modelMapper.map(role.get(), RoleDto.class);
-        }
-        throw new IllegalArgumentException("Privilege is already added");
+        role.get().addPrivilege(privilege.get());
+        roleRepository.save(role.get());
+        return modelMapper.map(role.get(), RoleDto.class);
+
     }
 
     @Override
@@ -106,8 +99,8 @@ public class RoleServiceImpl implements RoleService {
         if(!role.isPresent() || !privilege.isPresent()){
             throw new IllegalArgumentException("Role or Privilege not found");
         }
-        //role delete işlemi eklenecek hatalı
-        //role.get().removePrivilege(privilege.get());
+
+        role.get().removePrivilege(privilege.get());
         roleRepository.save(role.get());
         return Boolean.TRUE;
     }

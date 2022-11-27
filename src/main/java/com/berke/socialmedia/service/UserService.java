@@ -17,7 +17,11 @@ public interface UserService {
 
     UserDto register(UserRegisterDto userRegisterDto);
 
-    UserDto addRoleById(Long userId, Long roleId);
+    UserDto update(Long id, UserDto userDto);
 
     Boolean delete(Long id);
+
+    UserDto addRoleById(Long userId, Long roleId);
+
+    Boolean removeRoleById(Long userId, Long roleId);
 }

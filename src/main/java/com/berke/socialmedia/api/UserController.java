@@ -40,11 +40,7 @@ public class UserController {
     }
 
 
-    @PutMapping("/{id}")
-    public ResponseEntity<UserDto> addRoleById(@PathVariable(name = "id") Long userId,
-                                               @RequestParam(name = "roleId") Long roleId){
-        return ResponseEntity.ok(userService.addRoleById(userId,roleId));
-    }
+
 
 
     @DeleteMapping("/{id}")
@@ -56,5 +52,22 @@ public class UserController {
 
         return ResponseEntity.notFound().build();
 
+    }
+
+    @PutMapping("/{id}")
+    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserDto userDto){
+        return ResponseEntity.ok(userService.update(id, userDto));
+    }
+
+    @PutMapping("/{id}/roles")
+    public ResponseEntity<UserDto> addRoleById(@PathVariable(name = "id") Long userId,
+                                               @RequestParam(name = "roleId") Long roleId){
+        return ResponseEntity.ok(userService.addRoleById(userId,roleId));
+    }
+
+    @DeleteMapping("/{id}/roles")
+    public ResponseEntity<Void> removeRoleById(@PathVariable Long id, @RequestParam Long roleId){
+        userService.removeRoleById(id, roleId);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -48,7 +48,7 @@ public class User extends BaseEntity {
             mappedBy = "user")
     private Profile profile;
 
-    @ManyToMany(fetch = FetchType.EAGER)
+    @ManyToMany
     @JoinTable(
             name = "users_roles",
             joinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"),
@@ -58,6 +58,10 @@ public class User extends BaseEntity {
 
     public void addRole(Role role){
         this.roles.add(role);
+    }
+
+    public void removeRole(Role role){
+        this.roles.remove(role);
     }
 
 }
