@@ -44,7 +44,7 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto create(PostDto postDto) {
         Optional<Post> post = postRepository.findById(postDto.getId());
-        Optional<Profile> profile = profileRepository.findById(postDto.getProfile().getId());
+        Optional<Profile> profile = profileRepository.findById(postDto.getProfileId());
         if (!profile.isPresent())
             throw new IllegalArgumentException("User not found");
         if(post.isPresent())

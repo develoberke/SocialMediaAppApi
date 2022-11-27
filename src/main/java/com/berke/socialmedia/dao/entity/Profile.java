@@ -1,6 +1,7 @@
 package com.berke.socialmedia.dao.entity;
 
 import com.berke.socialmedia.dao.entity.common.BaseEntity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.*;
 import org.hibernate.annotations.NotFound;
 import org.hibernate.annotations.NotFoundAction;
@@ -8,7 +9,6 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 
 import javax.persistence.*;
-import java.util.List;
 import java.util.Set;
 
 @Getter

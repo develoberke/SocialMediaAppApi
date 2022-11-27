@@ -1,5 +1,6 @@
 package com.berke.socialmedia.dto;
 
+import com.fasterxml.jackson.annotation.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -19,10 +20,5 @@ public class ProfileDto {
     private UserDto user;
 
     private Long level;
-
-    //dto'da following ve followersler döngü oluşturup sıkıntı çıkarabilir
-    private Set<ProfileDto> following;
-
-    private Set<ProfileDto> followers;
 
 }
