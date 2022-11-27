@@ -16,4 +16,6 @@ public interface RoleService {
     void delete(Long id);
 
     RoleDto addPrivilegeById(Long roleId, Long privilegeId);
+
+    Boolean removePrivilegeById(Long id, Long privilegeId);
 }

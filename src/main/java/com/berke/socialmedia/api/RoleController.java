@@ -55,5 +55,11 @@ public class RoleController {
         return ResponseEntity.ok(roleService.addPrivilegeById(roleId,privilegeId));
     }
 
+    @DeleteMapping("{id}/privileges")
+    public ResponseEntity<RoleDto> removePrivilegeById(@PathVariable Long id, @RequestParam Long privilegeId){
+        roleService.removePrivilegeById(id, privilegeId);
+        return ResponseEntity.noContent().build();
+    }
+
 
 }

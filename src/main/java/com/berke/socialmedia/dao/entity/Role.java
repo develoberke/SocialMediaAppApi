@@ -50,4 +50,5 @@ public class Role extends BaseEntity {
     public void addPrivilege(Privilege privilege){
         this.privileges.add(privilege);
     }
+
 }

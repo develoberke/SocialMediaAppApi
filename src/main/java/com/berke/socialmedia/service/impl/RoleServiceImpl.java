@@ -98,4 +98,18 @@ public class RoleServiceImpl implements RoleService {
         }
         throw new IllegalArgumentException("Privilege is already added");
     }
+
+    @Override
+    public Boolean removePrivilegeById(Long id, Long privilegeId) {
+        Optional<Role> role = roleRepository.findById(id);
+        Optional<Privilege> privilege = privilegeRepository.findById(privilegeId);
+        if(!role.isPresent() || !privilege.isPresent()){
+            throw new IllegalArgumentException("Role or Privilege not found");
+        }
+        //role delete işlemi eklenecek hatalı
+        //role.get().removePrivilege(privilege.get());
+        roleRepository.save(role.get());
+        return Boolean.TRUE;
+    }
+
 }
