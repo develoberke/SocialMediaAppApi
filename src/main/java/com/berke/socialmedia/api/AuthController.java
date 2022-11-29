@@ -7,7 +7,6 @@ import com.berke.socialmedia.dto.UserRegisterDto;
 import com.berke.socialmedia.security.JwtTokenUtil;
 import com.berke.socialmedia.service.UserService;
 import com.berke.socialmedia.util.ApiPaths;
-import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

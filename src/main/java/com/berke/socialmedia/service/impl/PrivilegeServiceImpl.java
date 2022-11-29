@@ -3,6 +3,8 @@ package com.berke.socialmedia.service.impl;
 import com.berke.socialmedia.dao.PrivilegeRepository;
 import com.berke.socialmedia.dao.entity.Privilege;
 import com.berke.socialmedia.dto.PrivilegeDto;
+import com.berke.socialmedia.exception.AlreadyExistsException;
+import com.berke.socialmedia.exception.NotFoundException;
 import com.berke.socialmedia.service.PrivilegeService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -32,20 +34,16 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Override
     public PrivilegeDto getById(Long id) {
-        Optional<Privilege> privilege = privilegeRepository.findById(id);
-        if(privilege.isPresent()){
-            return modelMapper.map(privilege.get(),PrivilegeDto.class);
-        }
-        throw new EntityNotFoundException("There is no privilege with this id");
+        Privilege privilege = checkAndGetPrivilegeById(id);
+
+        return modelMapper.map(privilege,PrivilegeDto.class);
     }
 
 
     @Override
     public PrivilegeDto save(PrivilegeDto privilegeDto) {
-        Optional<Privilege> control = privilegeRepository.findById(privilegeDto.getId());
-        if(control.isPresent()){
-            throw new IllegalArgumentException("Id already exist");
-        }
+        checkAndThrowErrorIfPrivilegeExists(privilegeDto.getId());
+
         Privilege privilege = modelMapper.map(privilegeDto, Privilege.class);
         privilege = privilegeRepository.save(privilege);
         privilegeDto.setId(privilege.getId());
@@ -53,24 +51,34 @@ public class PrivilegeServiceImpl implements PrivilegeService {
     }
 
     @Override
-    public PrivilegeDto update(PrivilegeDto privilegeDto) {
-        Optional<Privilege> privilege = privilegeRepository.findById(privilegeDto.getId());
-        if(!privilege.isPresent()){
-            throw new IllegalArgumentException("Privilege not found");
-        }
-        privilege.get().setName(privilegeDto.getName());
-        privilege.get().setDescription(privilegeDto.getDescription());
-        privilegeRepository.save(privilege.get());
+    public PrivilegeDto update(Long id, PrivilegeDto privilegeDto) {
+        Privilege privilege = checkAndGetPrivilegeById(id);
+
+        if(privilegeDto.getName() != null)
+            privilege.setName(privilegeDto.getName());
+        if(privilegeDto.getDescription() != null)
+            privilege.setDescription(privilegeDto.getDescription());
+        privilegeRepository.save(privilege);
         return privilegeDto;
     }
 
     @Override
     public Boolean delete(Long id) {
-        Optional<Privilege> privilege = privilegeRepository.findById(id);
-        if(!privilege.isPresent()){
-            throw new IllegalArgumentException("Privilege not found");
-        }
-        privilegeRepository.delete(privilege.get());
+        Privilege privilege = checkAndGetPrivilegeById(id);
+        privilegeRepository.delete(privilege);
         return true;
+    }
+
+    private Privilege checkAndGetPrivilegeById(Long id){
+        Optional<Privilege> privilege = privilegeRepository.findById(id);
+        if(!privilege.isPresent())
+            throw new NotFoundException("Privilege", "No privilege found with this id");
+        return privilege.get();
+    }
+
+    private void checkAndThrowErrorIfPrivilegeExists(Long id){
+        Optional<Privilege> privilege = privilegeRepository.findById(id);
+        if(privilege.isPresent())
+            throw new AlreadyExistsException("Privilege", "A privilege with this id already exists");
     }
 }

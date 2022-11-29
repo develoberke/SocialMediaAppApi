@@ -9,6 +9,8 @@ import com.berke.socialmedia.dao.entity.Role;
 import com.berke.socialmedia.dao.entity.User;
 import com.berke.socialmedia.dto.UserDto;
 import com.berke.socialmedia.dto.UserRegisterDto;
+import com.berke.socialmedia.exception.AlreadyExistsException;
+import com.berke.socialmedia.exception.NotFoundException;
 import com.berke.socialmedia.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +31,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Autowired
     private  UserRepository userRepository;
-    @Autowired
-    private  ProfileRepository profileRepository;
 
     @Autowired
     private RoleRepository roleRepository;
@@ -81,35 +81,33 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDto getById(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if(user.isPresent()){
-            return modelMapper.map(user.get(),UserDto.class);
-        }
-        throw new EntityNotFoundException("There is no user with this id");
+        User user = checkAndGetUserById(id);
+
+        return modelMapper.map(user,UserDto.class);
     }
 
     @Override
     public UserDto getByUsername(String username) {
-        User user = userRepository.findByUsername(username);
-        if(user != null)
-            return modelMapper.map(user, UserDto.class);
-        throw new EntityNotFoundException("User not found with this username");
+        User user = checkAndGetUserByUsername(username);
+
+        return modelMapper.map(user, UserDto.class);
     }
 
+    /*
     @Override
     public UserDto save(UserDto userDto) {
-        Optional<User> control = userRepository.findById(userDto.getId());
-        if(control.isPresent()){
-            throw new IllegalArgumentException("Id already exist");
-        }
+        checkAndThrowErrorIfUserExists(userDto.getId());
+
         User user = modelMapper.map(userDto,User.class);
         user = userRepository.save(user);
         userDto.setId(user.getId());
         return userDto;
     }
+     */
 
     @Override
     public UserDto register(UserRegisterDto userRegisterDto) {
+        checkAndThrowErrorIfUserExists(userRegisterDto.getId());
         User user = new User();
         Profile profile = new Profile();
         user.setUsername(userRegisterDto.getUsername());
@@ -128,54 +126,67 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDto update(Long id, UserDto userDto) {
-        Optional<User> user = userRepository.findById(id);
-        if(!user.isPresent())
-            throw new IllegalArgumentException("User Not Found");
+        User user = checkAndGetUserById(id);
 
         if(userDto.getEmail() != null){
-            user.get().setEmail(userDto.getEmail());
+            user.setEmail(userDto.getEmail());
         }
         if(userDto.getUsername() != null){
-            user.get().setUsername(userDto.getUsername());
+            user.setUsername(userDto.getUsername());
         }
-        return modelMapper.map(userRepository.save(user.get()), UserDto.class);
+        return modelMapper.map(userRepository.save(user), UserDto.class);
 
     }
 
     @Override
     public Boolean delete(Long id) {
-        Optional<User> user = userRepository.findById(id);
-        if(user.isPresent()){
-            userRepository.delete(user.get());
-            return Boolean.TRUE;
-        }
-        else{
-            throw new IllegalArgumentException("user not found");
-        }
+        User user = checkAndGetUserById(id);
+        userRepository.delete(user);
+        return Boolean.TRUE;
     }
 
     @Override
     public UserDto addRoleById(Long userId, Long roleId) {
-        Optional<User> user = userRepository.findById(userId);
-        Optional<Role> role  = roleRepository.findById(roleId);
-        if(!user.isPresent() || !role.isPresent()){
-            throw new IllegalArgumentException("User or role not found");
-        }
+        User user = checkAndGetUserById(userId);
+        Role role = checkAndGetRoleById(roleId);
 
-        user.get().addRole(role.get());
-        userRepository.save(user.get());
-        return modelMapper.map(user.get(), UserDto.class);
+        user.addRole(role);
+        userRepository.save(user);
+        return modelMapper.map(user, UserDto.class);
     }
 
     @Override
     public Boolean removeRoleById(Long userId, Long roleId) {
-        Optional<User> user = userRepository.findById(userId);
-        Optional<Role> role  = roleRepository.findById(roleId);
-        if(!user.isPresent() || !role.isPresent()){
-            throw new IllegalArgumentException("User or role not found");
-        }
-        user.get().removeRole(role.get());
-        userRepository.save(user.get());
+        User user = checkAndGetUserById(userId);
+        Role role = checkAndGetRoleById(roleId);
+        user.removeRole(role);
+        userRepository.save(user);
         return Boolean.TRUE;
+    }
+
+    private User checkAndGetUserById(Long id){
+        Optional<User> user = userRepository.findById(id);
+        if(!user.isPresent())
+            throw new NotFoundException("User", "No user found with this id");
+        return user.get();
+    }
+
+    private User checkAndGetUserByUsername(String username){
+        User user = userRepository.findByUsername(username);
+        if(user == null)
+            throw new NotFoundException("User", "No user found with this username");
+        return user;
+    }
+    private void checkAndThrowErrorIfUserExists(Long id){
+        Optional<User> user = userRepository.findById(id);
+        if(user.isPresent())
+            throw new AlreadyExistsException("User", "A user with this id already exists");
+    }
+
+    private Role checkAndGetRoleById(Long id){
+        Optional<Role> role = roleRepository.findById(id);
+        if(!role.isPresent())
+            throw new NotFoundException("Role", "No role found with this id");
+        return role.get();
     }
 }

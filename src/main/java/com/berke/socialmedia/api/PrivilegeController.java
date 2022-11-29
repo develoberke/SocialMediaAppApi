@@ -40,9 +40,9 @@ public class PrivilegeController {
         return ResponseEntity.ok(privilegeService.save(privilegeDto));
     }
 
-    @PutMapping
-    public  ResponseEntity<PrivilegeDto> update(@RequestBody PrivilegeDto privilegeDto){
-        return ResponseEntity.ok(privilegeService.update(privilegeDto));
+    @PutMapping("/{id}")
+    public  ResponseEntity<PrivilegeDto> update(@PathVariable Long id, @RequestBody PrivilegeDto privilegeDto){
+        return ResponseEntity.ok(privilegeService.update(id, privilegeDto));
     }
 
     @DeleteMapping("/{id}")

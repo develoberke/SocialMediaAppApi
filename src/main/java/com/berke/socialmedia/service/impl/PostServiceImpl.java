@@ -5,6 +5,8 @@ import com.berke.socialmedia.dao.ProfileRepository;
 import com.berke.socialmedia.dao.entity.Post;
 import com.berke.socialmedia.dao.entity.Profile;
 import com.berke.socialmedia.dto.PostDto;
+import com.berke.socialmedia.exception.AlreadyExistsException;
+import com.berke.socialmedia.exception.NotFoundException;
 import com.berke.socialmedia.service.PostService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -35,49 +37,61 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto getById(Long id) {
-        Optional<Post> post = postRepository.findById(id);
-        if (!post.isPresent())
-            throw new IllegalArgumentException("Post not found");
-        return modelMapper.map(post.get(), PostDto.class);
+        Post post = checkAndGetPostById(id);
+        return modelMapper.map(post, PostDto.class);
     }
 
     @Override
     public PostDto create(PostDto postDto) {
-        Optional<Post> post = postRepository.findById(postDto.getId());
-        Optional<Profile> profile = profileRepository.findById(postDto.getProfileId());
-        if (!profile.isPresent())
-            throw new IllegalArgumentException("User not found");
-        if(post.isPresent())
-            throw new IllegalArgumentException("Id is already used");
+        Profile profile = checkAndGetProfileById(postDto.getProfileId());
+        checkAndThrowErrorIfPostExists(postDto.getId());
 
-        Post postToSave = modelMapper.map(postDto, Post.class);
-        postToSave.setProfile(profile.get());
-        profile.get().addPost(postToSave);
-        profileRepository.save(profile.get());
-        return modelMapper.map(postRepository.save(postToSave), PostDto.class);
+        Post post = modelMapper.map(postDto, Post.class);
+        post.setProfile(profile);
+        profile.addPost(post);
+        profileRepository.save(profile);
+
+        return modelMapper.map(postRepository.save(post), PostDto.class);
     }
 
     @Override
     public PostDto update(Long id, PostDto postDto) {
-        Optional<Post> post = postRepository.findById(id);
-        if(!post.isPresent())
-            throw new IllegalArgumentException("Post not found");
+        Post post = checkAndGetPostById(id);
         if(postDto.getTitle() != null)
-            post.get().setTitle(postDto.getTitle());
+            post.setTitle(postDto.getTitle());
         if(postDto.getText() != null)
-            post.get().setText(postDto.getText());
+            post.setText(postDto.getText());
 
-
-        return modelMapper.map(postRepository.save(post.get()), PostDto.class);
-
+        return modelMapper.map(postRepository.save(post), PostDto.class);
     }
 
     @Override
     public Boolean delete(Long id) {
-        Optional<Post> post = postRepository.findById(id);
-        if(!post.isPresent())
-            throw new IllegalArgumentException("Post not found");
-        postRepository.delete(post.get());
+        Post post = checkAndGetPostById(id);
+        postRepository.delete(post);
+
         return Boolean.TRUE;
     }
+
+
+    private Post checkAndGetPostById(Long id){
+        Optional<Post> post = postRepository.findById(id);
+        if(!post.isPresent())
+            throw new NotFoundException("Post", "No post found with this id");
+        return post.get();
+    }
+
+    private void checkAndThrowErrorIfPostExists(Long id){
+        Optional<Post> post = postRepository.findById(id);
+        if(post.isPresent())
+            throw new AlreadyExistsException("Post", "A post with this id already exists");
+    }
+
+    private Profile checkAndGetProfileById(Long id){
+        Optional<Profile> profile = profileRepository.findById(id);
+        if(!profile.isPresent())
+            throw new NotFoundException("Profile", "No profile found with this id");
+        return profile.get();
+    }
+
 }

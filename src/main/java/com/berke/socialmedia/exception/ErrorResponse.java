@@ -10,6 +10,12 @@ import java.util.Date;
 @AllArgsConstructor
 @NoArgsConstructor
 public class ErrorResponse {
-    private Date date;
+    private Date time;
     private String message;
+    private String details;
+
+    public ErrorResponse(Date time, String message) {
+        this.time = time;
+        this.message = message;
+    }
 }

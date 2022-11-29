@@ -13,7 +13,7 @@ public interface UserService {
 
     UserDto getByUsername(String username);
 
-    UserDto save(UserDto userDto);
+    //UserDto save(UserDto userDto);
 
     UserDto register(UserRegisterDto userRegisterDto);
 

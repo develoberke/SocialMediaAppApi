@@ -34,12 +34,13 @@ public class UserController {
         return ResponseEntity.ok(userService.getById(id));
     }
 
+    /*
     @PostMapping
     public ResponseEntity<UserDto> save(@RequestBody UserDto userDto){
         return ResponseEntity.ok(userService.save(userDto));
     }
 
-
+     */
 
 
 

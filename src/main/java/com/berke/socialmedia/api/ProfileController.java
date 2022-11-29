@@ -60,7 +60,7 @@ public class ProfileController {
         return profileService.getFollowings(id);
     }
 
-    @PostMapping("/{id}/followings")
+    @PutMapping("/{id}/followings")
     public Boolean follow(@PathVariable Long id, @RequestParam Long profileId) {
         return profileService.follow(id, profileId);
     }

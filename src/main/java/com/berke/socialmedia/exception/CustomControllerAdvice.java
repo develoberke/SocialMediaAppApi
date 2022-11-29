@@ -14,16 +14,27 @@ import java.util.Date;
 @ControllerAdvice
 public class CustomControllerAdvice extends ResponseEntityExceptionHandler {
 
-    @ExceptionHandler(ConstraintViolationException.class)
+    @ExceptionHandler(value = {ConstraintViolationException.class})
     public ResponseEntity<?> handleUniqueConstraintException(ConstraintViolationException e, WebRequest webRequest){
         ErrorResponse errorResponse = new ErrorResponse(new Date(), "Bu email veya username daha önce kullanılmış");
-        return new ResponseEntity<>(errorResponse, HttpStatus.EXPECTATION_FAILED);
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
+    }
+
+    @ExceptionHandler(value = {NotFoundException.class})
+    public ResponseEntity<?> handleNotFoundException(NotFoundException e, WebRequest webRequest){
+        ErrorResponse errorResponse = new ErrorResponse(new Date(), e.getMessage(), e.getDetails());
+        return new ResponseEntity<>(errorResponse, HttpStatus.NOT_FOUND);
+    }
+
+    @ExceptionHandler(value = {AlreadyExistsException.class})
+    public ResponseEntity<ErrorResponse> handleAlreadyExistsException(AlreadyExistsException e, WebRequest webRequest){
+        ErrorResponse errorResponse = new ErrorResponse(new Date(), e.getMessage(), e.getDetails());
+        return new ResponseEntity<>(errorResponse, HttpStatus.CONFLICT);
     }
 
     @ExceptionHandler(Exception.class)
     public ResponseEntity<?> handleExceptions(Exception e, WebRequest webRequest) {
         ErrorResponse errorResponse = new ErrorResponse(new Date(), e.getMessage());
-        //buradan devam
         return new ResponseEntity<>(errorResponse, HttpStatus.EXPECTATION_FAILED);
     }
 }

@@ -12,7 +12,7 @@ public interface PrivilegeService {
 
     PrivilegeDto save(PrivilegeDto privilegeDto);
 
-    PrivilegeDto update(PrivilegeDto privilegeDto);
+    PrivilegeDto update(Long id, PrivilegeDto privilegeDto);
 
     Boolean delete(Long id);
 }
