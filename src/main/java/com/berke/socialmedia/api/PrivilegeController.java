@@ -5,6 +5,7 @@ import com.berke.socialmedia.dto.PrivilegeDto;
 import com.berke.socialmedia.service.PrivilegeService;
 import com.berke.socialmedia.util.ApiPaths;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
@@ -37,16 +38,18 @@ public class PrivilegeController {
 
     @PostMapping
     public ResponseEntity<PrivilegeDto> save(@RequestBody PrivilegeDto privilegeDto){
-        return ResponseEntity.ok(privilegeService.save(privilegeDto));
+        return new ResponseEntity<>(privilegeService.save(privilegeDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public  ResponseEntity<PrivilegeDto> update(@PathVariable Long id, @RequestBody PrivilegeDto privilegeDto){
-        return ResponseEntity.ok(privilegeService.update(id, privilegeDto));
+        privilegeService.update(id, privilegeDto);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
     public ResponseEntity<Boolean> delete(@PathVariable Long id){
-        return ResponseEntity.ok(privilegeService.delete(id));
+        privilegeService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -5,6 +5,7 @@ import com.berke.socialmedia.dto.RoleDto;
 import com.berke.socialmedia.service.RoleService;
 import com.berke.socialmedia.util.ApiPaths;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -35,12 +36,13 @@ public class RoleController {
 
     @PostMapping
     public ResponseEntity<RoleDto> save(@RequestBody RoleDto roleDto){
-        return ResponseEntity.ok(roleService.save(roleDto));
+        return new ResponseEntity<>(roleService.save(roleDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<RoleDto> update(@PathVariable Long id, @RequestBody RoleDto roleDto){
-        return ResponseEntity.ok(roleService.update(id,roleDto));
+        roleService.update(id,roleDto);
+        return ResponseEntity.noContent().build();
     }
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> delete(@PathVariable Long id){
@@ -52,7 +54,8 @@ public class RoleController {
     @PutMapping("/{id}/privileges")
     public ResponseEntity<RoleDto> addPrivilegeById(@PathVariable(name = "id") Long roleId,
                                                     @RequestParam(name = "privilegeId") Long privilegeId){
-        return ResponseEntity.ok(roleService.addPrivilegeById(roleId,privilegeId));
+        roleService.addPrivilegeById(roleId,privilegeId);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("{id}/privileges")

@@ -3,6 +3,8 @@ package com.berke.socialmedia.api;
 import com.berke.socialmedia.dto.PostDto;
 import com.berke.socialmedia.service.PostService;
 import com.berke.socialmedia.util.ApiPaths;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,27 +20,29 @@ public class PostController {
     }
 
     @GetMapping
-    public List<PostDto> getAll(){
-       return postService.getAll();
+    public ResponseEntity<List<PostDto>> getAll(){
+       return ResponseEntity.ok(postService.getAll());
     }
 
     @GetMapping("/{id}")
-    public PostDto getById(@PathVariable Long id){
-        return postService.getById(id);
+    public ResponseEntity<PostDto> getById(@PathVariable Long id){
+        return ResponseEntity.ok(postService.getById(id));
     }
 
     @PostMapping
-    public PostDto create(@RequestBody PostDto postDto){
-        return postService.create(postDto);
+    public ResponseEntity<PostDto> create(@RequestBody PostDto postDto){
+        return new ResponseEntity<PostDto>(postService.create(postDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public PostDto update(@PathVariable Long id, @RequestBody PostDto postDto){
-        return postService.update(id, postDto);
+    public ResponseEntity<PostDto> update(@PathVariable Long id, @RequestBody PostDto postDto){
+        postService.update(id, postDto);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}")
-    public Boolean delete(@PathVariable Long id){
-        return postService.delete(id);
+    public ResponseEntity<Boolean> delete(@PathVariable Long id){
+        postService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 }

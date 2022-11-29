@@ -7,6 +7,7 @@ import com.berke.socialmedia.dto.UserRegisterDto;
 import com.berke.socialmedia.security.JwtTokenUtil;
 import com.berke.socialmedia.service.UserService;
 import com.berke.socialmedia.util.ApiPaths;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -47,6 +48,6 @@ public class AuthController {
     @PostMapping("/register")
     public ResponseEntity<UserDto> register(@RequestBody UserRegisterDto userRegisterDto){
         UserDto userDto = userService.register(userRegisterDto);
-        return ResponseEntity.ok(userDto);
+        return new ResponseEntity<>(userDto, HttpStatus.CREATED);
     }
 }

@@ -48,22 +48,21 @@ public class UserController {
     public ResponseEntity<Boolean> delete(@PathVariable(name = "id") Long id){
         if(id == null)
             return ResponseEntity.badRequest().build();
-        if(userService.delete(id))
-            return ResponseEntity.noContent().build();
-
-        return ResponseEntity.notFound().build();
-
+        userService.delete(id);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserDto userDto){
-        return ResponseEntity.ok(userService.update(id, userDto));
+        userService.update(id, userDto);
+        return ResponseEntity.noContent().build();
     }
 
     @PutMapping("/{id}/roles")
     public ResponseEntity<UserDto> addRoleById(@PathVariable(name = "id") Long userId,
                                                @RequestParam(name = "roleId") Long roleId){
-        return ResponseEntity.ok(userService.addRoleById(userId,roleId));
+        userService.addRoleById(userId,roleId);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}/roles")

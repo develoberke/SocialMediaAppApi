@@ -6,6 +6,8 @@ import com.berke.socialmedia.dto.ProfileDto;
 import com.berke.socialmedia.service.ProfileService;
 import com.berke.socialmedia.util.ApiPaths;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -22,51 +24,55 @@ public class ProfileController {
     }
 
     @GetMapping
-    public List<ProfileDto> getAll(){
-        return profileService.getAll();
+    public ResponseEntity<List<ProfileDto>> getAll(){
+        return ResponseEntity.ok(profileService.getAll());
     }
 
     @GetMapping("/{id}")
-    public ProfileDto getById(@PathVariable(value = "id") Long id){
-        return profileService.getById(id);
+    public ResponseEntity<ProfileDto> getById(@PathVariable(value = "id") Long id){
+        return ResponseEntity.ok(profileService.getById(id));
     }
     @PutMapping("/{id}")
-    public ProfileDto update(@PathVariable Long id, @RequestBody ProfileDto profileDto){
-        return profileService.update(id, profileDto);
+    public ResponseEntity<ProfileDto> update(@PathVariable Long id, @RequestBody ProfileDto profileDto){
+        profileService.update(id, profileDto);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/posts")
-    public List<PostDto> getPosts(@PathVariable Long id){
-        return profileService.getPosts(id);
+    public ResponseEntity<List<PostDto>> getPosts(@PathVariable Long id){
+        return ResponseEntity.ok(profileService.getPosts(id));
     }
 
     @PostMapping("/{id}/posts")
-    public PostDto addPost(@PathVariable Long id, @RequestBody PostDto postDto){
-        return profileService.addPost(id, postDto);
+    public ResponseEntity<PostDto> addPost(@PathVariable Long id, @RequestBody PostDto postDto){
+        return new ResponseEntity<>(profileService.addPost(id, postDto), HttpStatus.CREATED);
     }
 
     @GetMapping("/{id}/followers")
-    public List<ProfileDto> getFollowers(@PathVariable Long id){
-        return profileService.getFollowers(id);
+    public ResponseEntity<List<ProfileDto>> getFollowers(@PathVariable Long id){
+        return ResponseEntity.ok(profileService.getFollowers(id));
     }
 
     @DeleteMapping("/{id}/followers")
-    public Boolean removeFollower(@PathVariable Long id, @RequestParam Long profileId){
-        return profileService.removeFollower(id, profileId);
+    public ResponseEntity<Boolean> removeFollower(@PathVariable Long id, @RequestParam Long profileId){
+        profileService.removeFollower(id, profileId);
+        return ResponseEntity.noContent().build();
     }
 
     @GetMapping("/{id}/followings")
-    public List<ProfileDto> getFollowings(@PathVariable Long id){
-        return profileService.getFollowings(id);
+    public ResponseEntity<List<ProfileDto>> getFollowings(@PathVariable Long id){
+        return ResponseEntity.ok(profileService.getFollowings(id));
     }
 
     @PutMapping("/{id}/followings")
-    public Boolean follow(@PathVariable Long id, @RequestParam Long profileId) {
-        return profileService.follow(id, profileId);
+    public ResponseEntity<Boolean> follow(@PathVariable Long id, @RequestParam Long profileId) {
+        profileService.follow(id, profileId);
+        return ResponseEntity.noContent().build();
     }
 
     @DeleteMapping("/{id}/followings")
-    public Boolean unfollow(@PathVariable Long id, @RequestParam Long profileId){
-        return profileService.unfollow(id, profileId);
+    public ResponseEntity<Boolean> unfollow(@PathVariable Long id, @RequestParam Long profileId){
+        profileService.unfollow(id, profileId);
+        return ResponseEntity.noContent().build();
     }
 }
