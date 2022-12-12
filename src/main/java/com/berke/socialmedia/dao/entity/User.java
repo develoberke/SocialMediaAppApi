@@ -54,6 +54,12 @@ public class User extends BaseEntity {
     )
     private Set<Role> roles = new HashSet<>();
 
+    @OneToMany(mappedBy = "user")
+    private Set<Like> likes;
+
+    @OneToMany(mappedBy = "user")
+    private Set<Comment> comments;
+
     public void addRole(Role role){
         this.roles.add(role);
     }
