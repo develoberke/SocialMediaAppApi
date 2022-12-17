@@ -45,4 +45,12 @@ public class PostController {
         postService.delete(id);
         return ResponseEntity.noContent().build();
     }
+
+   /* @PutMapping("/{id}/likes")
+    public ResponseEntity<Void> like(@PathVariable Long postId, @RequestParam Long userId){
+        postService.like(postId, userId);
+        return ResponseEntity.noContent().build();
+   }
+
+    */
 }

@@ -62,6 +62,11 @@ public class Profile extends BaseEntity {
             action = NotFoundAction.IGNORE)
     private Set<Post> posts;
 
+    @OneToMany(mappedBy = "profile")
+    private Set<Like> likes;
+
+    @OneToMany(mappedBy = "profile")
+    private Set<Comment> comments;
 
     private void addFollower(Profile profile){
         if(profile != null && profile != this) {
@@ -102,6 +107,7 @@ public class Profile extends BaseEntity {
             post.setProfile(null);
         }
     }
+
     //add follower fonksiyonları eklenecek
     // örnek https://github.com/nhabbash/tanuki/blob/master/src/main/java/com/web/tanuki/model/TanukiUser.java
 }

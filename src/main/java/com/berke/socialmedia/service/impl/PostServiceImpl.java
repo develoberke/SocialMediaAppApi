@@ -73,7 +73,6 @@ public class PostServiceImpl implements PostService {
         return Boolean.TRUE;
     }
 
-
     private Post checkAndGetPostById(Long id){
         Optional<Post> post = postRepository.findById(id);
         if(!post.isPresent())
