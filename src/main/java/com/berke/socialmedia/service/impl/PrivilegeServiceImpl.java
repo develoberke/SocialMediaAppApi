@@ -42,9 +42,8 @@ public class PrivilegeServiceImpl implements PrivilegeService {
 
     @Override
     public PrivilegeDto save(PrivilegeDto privilegeDto) {
-        checkAndThrowErrorIfPrivilegeExists(privilegeDto.getId());
-
         Privilege privilege = modelMapper.map(privilegeDto, Privilege.class);
+        privilege.setId(0L);
         privilege = privilegeRepository.save(privilege);
         privilegeDto.setId(privilege.getId());
         return privilegeDto;

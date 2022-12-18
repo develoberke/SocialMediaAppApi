@@ -24,14 +24,11 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final UserRepository userRepository;
 
-    private final PostRepository postRepository;
-
     private final ModelMapper modelMapper;
 
-    public ProfileServiceImpl(ProfileRepository profileRepository, UserRepository userRepository, PostRepository postRepository, ModelMapper modelMapper) {
+    public ProfileServiceImpl(ProfileRepository profileRepository, UserRepository userRepository, ModelMapper modelMapper) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
-        this.postRepository = postRepository;
         this.modelMapper = modelMapper;
     }
 
@@ -59,28 +56,6 @@ public class ProfileServiceImpl implements ProfileService {
         if(profileDto.getPicture() != null)
             profile.setPicture(profileDto.getPicture());
         return modelMapper.map(profileRepository.save(profile), ProfileDto.class);
-    }
-
-
-    @Override
-    public List<PostDto> getPosts(Long id) {
-        Profile profile = checkAndGetProfileById(id);
-
-        return Arrays.asList(modelMapper.map(postRepository.getAllByProfileId(id), PostDto[].class));
-    }
-
-    @Override
-    public PostDto addPost(Long id, PostDto postDto) {
-        Profile profile = checkAndGetProfileById(id);
-        checkAndThrowErrorIfPostExists(postDto.getId());
-
-        Post post = modelMapper.map(postDto, Post.class);
-        profile.addPost(post);
-        post = postRepository.save(post);
-        profileRepository.save(profile);
-
-        return modelMapper.map(post, PostDto.class);
-
     }
 
 
@@ -137,11 +112,5 @@ public class ProfileServiceImpl implements ProfileService {
         Optional<Profile> profile = profileRepository.findById(id);
         if(profile.isPresent())
             throw new AlreadyExistsException("Profile", "A profile with this id already exists");
-    }
-
-    private void checkAndThrowErrorIfPostExists(Long id){
-        Optional<Post> post = postRepository.findById(id);
-        if(post.isPresent())
-            throw new AlreadyExistsException("Post", "A post with this id already exists");
     }
 }

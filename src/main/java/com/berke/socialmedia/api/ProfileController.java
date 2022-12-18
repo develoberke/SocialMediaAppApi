@@ -38,16 +38,6 @@ public class ProfileController {
         return ResponseEntity.noContent().build();
     }
 
-    @GetMapping("/{id}/posts")
-    public ResponseEntity<List<PostDto>> getPosts(@PathVariable Long id){
-        return ResponseEntity.ok(profileService.getPosts(id));
-    }
-
-    @PostMapping("/{id}/posts")
-    public ResponseEntity<PostDto> addPost(@PathVariable Long id, @RequestBody PostDto postDto){
-        return new ResponseEntity<>(profileService.addPost(id, postDto), HttpStatus.CREATED);
-    }
-
     @GetMapping("/{id}/followers")
     public ResponseEntity<List<ProfileDto>> getFollowers(@PathVariable Long id){
         return ResponseEntity.ok(profileService.getFollowers(id));

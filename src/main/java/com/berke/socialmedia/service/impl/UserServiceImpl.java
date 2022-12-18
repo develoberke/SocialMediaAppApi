@@ -107,7 +107,6 @@ public class UserServiceImpl implements UserService, UserDetailsService {
 
     @Override
     public UserDto register(UserRegisterDto userRegisterDto) {
-        checkAndThrowErrorIfUserExists(userRegisterDto.getId());
         User user = new User();
         Profile profile = new Profile();
         user.setUsername(userRegisterDto.getUsername());

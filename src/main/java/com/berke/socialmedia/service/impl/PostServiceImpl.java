@@ -31,8 +31,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAll() {
+    public List<PostDto> getAll(Optional<Long> userId) {
+        if(!userId.isPresent())
         return Arrays.asList(modelMapper.map(postRepository.findAll(), PostDto[].class));
+
+        return Arrays.asList(modelMapper.map(postRepository.getAllByProfileId(userId.get()), PostDto[].class));
     }
 
     @Override
@@ -44,15 +47,16 @@ public class PostServiceImpl implements PostService {
     @Override
     public PostDto create(PostDto postDto) {
         Profile profile = checkAndGetProfileById(postDto.getProfileId());
-        checkAndThrowErrorIfPostExists(postDto.getId());
 
         Post post = modelMapper.map(postDto, Post.class);
+        post.setId(0L);
         post.setProfile(profile);
         profile.addPost(post);
         profileRepository.save(profile);
 
         return modelMapper.map(postRepository.save(post), PostDto.class);
     }
+
 
     @Override
     public PostDto update(Long id, PostDto postDto) {

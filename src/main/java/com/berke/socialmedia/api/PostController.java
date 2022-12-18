@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping(ApiPaths.PostCtrl.CTRL)
@@ -20,8 +21,8 @@ public class PostController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PostDto>> getAll(){
-       return ResponseEntity.ok(postService.getAll());
+    public ResponseEntity<List<PostDto>> getAll(@RequestParam Optional<Long> userId){
+       return ResponseEntity.ok(postService.getAll(userId));
     }
 
     @GetMapping("/{id}")

@@ -44,9 +44,8 @@ public class RoleServiceImpl implements RoleService {
 
     @Override
     public RoleDto save(RoleDto roleDto) {
-        checkAndThrowErrorIfRoleExists(roleDto.getId());
-
         Role role = modelMapper.map(roleDto, Role.class);
+        role.setId(0L);
         role = roleRepository.save(role);
         roleDto.setId(role.getId());
         return roleDto;

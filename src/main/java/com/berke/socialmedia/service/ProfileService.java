@@ -12,10 +12,6 @@ public interface ProfileService {
     ProfileDto getById(Long id);
     ProfileDto update(Long id, ProfileDto profileDto);
 
-    List<PostDto> getPosts(Long id);
-
-    PostDto addPost(Long id, PostDto postDto);
-
     List<ProfileDto> getFollowers(Long id);
 
     Boolean removeFollower(Long id, Long profileId);
