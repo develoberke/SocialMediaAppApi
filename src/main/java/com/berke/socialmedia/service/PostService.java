@@ -7,7 +7,7 @@ import java.util.Optional;
 
 public interface PostService {
 
-    List<PostDto> getAll(Optional<Long> userId);
+    List<PostDto> getAll(Optional<Long> profileId);
 
     PostDto getById(Long id);
 

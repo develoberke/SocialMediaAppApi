@@ -1,6 +1,8 @@
 package com.berke.socialmedia.exception;
 
-public class NotFoundException extends RuntimeException{
+import java.util.function.Supplier;
+
+public class NotFoundException extends RuntimeException {
 
     private String className;
     private String details;
@@ -22,4 +24,5 @@ public class NotFoundException extends RuntimeException{
     public String getDetails() {
         return details;
     }
+
 }

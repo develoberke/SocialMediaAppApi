@@ -28,4 +28,12 @@ public class ApiPaths {
         public static final String CTRL = BASE_PATH + "/posts";
     }
 
+    public static final class LikeCtrl{
+        public  static final String CTRL = BASE_PATH + "/likes";
+    }
+
+    public static final class CommentCtrl{
+        public static final String CTRL = BASE_PATH + "/comments";
+    }
+
 }

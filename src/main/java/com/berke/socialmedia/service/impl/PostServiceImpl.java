@@ -31,11 +31,11 @@ public class PostServiceImpl implements PostService {
     }
 
     @Override
-    public List<PostDto> getAll(Optional<Long> userId) {
-        if(!userId.isPresent())
+    public List<PostDto> getAll(Optional<Long> profileId) {
+        if(!profileId.isPresent())
         return Arrays.asList(modelMapper.map(postRepository.findAll(), PostDto[].class));
 
-        return Arrays.asList(modelMapper.map(postRepository.getAllByProfileId(userId.get()), PostDto[].class));
+        return Arrays.asList(modelMapper.map(postRepository.getAllByProfileId(profileId.get()), PostDto[].class));
     }
 
     @Override
