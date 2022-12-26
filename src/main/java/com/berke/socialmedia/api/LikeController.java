@@ -31,13 +31,13 @@ public class LikeController {
     }
 
     @PostMapping
-    public ResponseEntity<LikeDto> create(@RequestParam Long profileId, @RequestParam Long postId){
-        return new ResponseEntity<>(likeService.create(profileId, postId), HttpStatus.CREATED);
+    public ResponseEntity<LikeDto> create(@RequestParam Long postId){
+        return new ResponseEntity<>(likeService.create( postId), HttpStatus.CREATED);
     }
 
     @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam Long profileId, @RequestParam Long postId){
-        likeService.delete(profileId, postId);
+    public ResponseEntity<Void> delete(@RequestParam Long postId){
+        likeService.delete(postId);
         return ResponseEntity.noContent().build();
     }
 }

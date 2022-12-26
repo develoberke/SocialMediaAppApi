@@ -11,7 +11,7 @@ public interface LikeService {
 
     LikeDto getById(Long id);
 
-    LikeDto create(Long profileId, Long postId);
+    LikeDto create(Long postId);
 
-    void delete(Long profileId, Long postId);
+    void delete(Long postId);
 }

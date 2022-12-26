@@ -9,6 +9,7 @@ import com.berke.socialmedia.dao.entity.Profile;
 import com.berke.socialmedia.dto.LikeDto;
 import com.berke.socialmedia.exception.NotFoundException;
 import com.berke.socialmedia.service.LikeService;
+import com.berke.socialmedia.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +26,15 @@ public class LikeServiceImpl implements LikeService {
 
     private final ProfileRepository profileRepository;
 
+    private final UserService userService;
+
     private final ModelMapper modelMapper;
 
-    public LikeServiceImpl(LikeRepository likeRepository, PostRepository postRepository, ProfileRepository profileRepository, ModelMapper modelMapper) {
+    public LikeServiceImpl(LikeRepository likeRepository, PostRepository postRepository, ProfileRepository profileRepository, UserService userService, ModelMapper modelMapper) {
         this.likeRepository = likeRepository;
         this.postRepository = postRepository;
         this.profileRepository = profileRepository;
+        this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
@@ -53,8 +57,8 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public LikeDto create(Long profileId, Long postId) {
-        Optional<Profile> profile = profileRepository.findById(profileId);
+    public LikeDto create(Long postId) {
+        Optional<Profile> profile = profileRepository.findById(userService.getCurrentUser().getId());
         if(!profile.isPresent())
             throw new NotFoundException("Profile", "No profile found with this id");
         Optional<Post> post = postRepository.findById(postId);
@@ -70,14 +74,14 @@ public class LikeServiceImpl implements LikeService {
     }
 
     @Override
-    public void delete(Long profileId, Long postId) {
-        Optional<Profile> profile = profileRepository.findById(profileId);
+    public void delete(Long postId) {
+        Optional<Profile> profile = profileRepository.findById(userService.getCurrentUser().getId());
         if(!profile.isPresent())
             throw new NotFoundException("Profile", "No profile found with this id");
         Optional<Post> post = postRepository.findById(postId);
         if(!post.isPresent())
             throw new NotFoundException("Post", "No post found with this id");
-        Like like = likeRepository.getByProfileIdAndPostId(profileId, postId);
+        Like like = likeRepository.getByProfileIdAndPostId(userService.getCurrentUser().getId(), postId);
         likeRepository.delete(like);
     }
 

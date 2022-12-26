@@ -9,6 +9,7 @@ import com.berke.socialmedia.dao.entity.Profile;
 import com.berke.socialmedia.dto.CommentDto;
 import com.berke.socialmedia.exception.NotFoundException;
 import com.berke.socialmedia.service.CommentService;
+import com.berke.socialmedia.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -25,12 +26,15 @@ public class CommentServiceImpl implements CommentService {
 
     private final PostRepository postRepository;
 
+    private final UserService userService;
+
     private final ProfileRepository profileRepository;
 
-    public CommentServiceImpl(CommentRepository commentRepository, ModelMapper modelMapper, PostRepository postRepository, ProfileRepository profileRepository) {
+    public CommentServiceImpl(CommentRepository commentRepository, ModelMapper modelMapper, PostRepository postRepository, UserService userService, ProfileRepository profileRepository) {
         this.commentRepository = commentRepository;
         this.modelMapper = modelMapper;
         this.postRepository = postRepository;
+        this.userService = userService;
         this.profileRepository = profileRepository;
     }
 
@@ -60,7 +64,7 @@ public class CommentServiceImpl implements CommentService {
         Comment comment = modelMapper.map(commentDto, Comment.class);
         comment.setId(0L);
 
-        Optional<Profile> profile = profileRepository.findById(commentDto.getProfileId());
+        Optional<Profile> profile = profileRepository.findById(userService.getCurrentUser().getId());
         if(!profile.isPresent())
             throw new NotFoundException("Profile", "No profile found with this id");
         Optional<Post> post = postRepository.findById(commentDto.getPostId());
@@ -72,6 +76,7 @@ public class CommentServiceImpl implements CommentService {
 
         comment = commentRepository.save(comment);
         commentDto.setId(comment.getId());
+        commentDto.setProfileId(profile.get().getId());
         return commentDto;
     }
 

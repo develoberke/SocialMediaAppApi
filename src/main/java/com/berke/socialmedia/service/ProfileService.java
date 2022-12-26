@@ -14,11 +14,11 @@ public interface ProfileService {
 
     List<ProfileDto> getFollowers(Long id);
 
-    Boolean removeFollower(Long id, Long profileId);
+    Boolean removeFollower(Long profileId);
 
     List<ProfileDto> getFollowings(Long id);
 
-    Boolean follow(Long id, Long followUserId);
+    Boolean follow(Long followUserId);
 
-    Boolean unfollow(Long id, Long unfollowUserId);
+    Boolean unfollow(Long unfollowUserId);
 }

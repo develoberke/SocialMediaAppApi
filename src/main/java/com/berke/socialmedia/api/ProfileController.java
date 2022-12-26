@@ -43,9 +43,9 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.getFollowers(id));
     }
 
-    @DeleteMapping("/{id}/followers")
-    public ResponseEntity<Boolean> removeFollower(@PathVariable Long id, @RequestParam Long profileId){
-        profileService.removeFollower(id, profileId);
+    @DeleteMapping("/followers")
+    public ResponseEntity<Boolean> removeFollower(@RequestParam Long profileId){
+        profileService.removeFollower(profileId);
         return ResponseEntity.noContent().build();
     }
 
@@ -54,15 +54,15 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.getFollowings(id));
     }
 
-    @PutMapping("/{id}/followings")
-    public ResponseEntity<Boolean> follow(@PathVariable Long id, @RequestParam Long profileId) {
-        profileService.follow(id, profileId);
+    @PutMapping("/followings")
+    public ResponseEntity<Boolean> follow(@RequestParam Long profileId) {
+        profileService.follow(profileId);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping("/{id}/followings")
-    public ResponseEntity<Boolean> unfollow(@PathVariable Long id, @RequestParam Long profileId){
-        profileService.unfollow(id, profileId);
+    @DeleteMapping("/followings")
+    public ResponseEntity<Boolean> unfollow(@RequestParam Long profileId){
+        profileService.unfollow(profileId);
         return ResponseEntity.noContent().build();
     }
 }

@@ -1,16 +1,18 @@
 package com.berke.socialmedia.service.impl;
 
-import com.berke.socialmedia.dao.PostRepository;
 import com.berke.socialmedia.dao.ProfileRepository;
 import com.berke.socialmedia.dao.UserRepository;
-import com.berke.socialmedia.dao.entity.Post;
 import com.berke.socialmedia.dao.entity.Profile;
-import com.berke.socialmedia.dto.PostDto;
+import com.berke.socialmedia.dao.entity.User;
 import com.berke.socialmedia.dto.ProfileDto;
 import com.berke.socialmedia.exception.AlreadyExistsException;
 import com.berke.socialmedia.exception.NotFoundException;
 import com.berke.socialmedia.service.ProfileService;
+import com.berke.socialmedia.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -24,11 +26,14 @@ public class ProfileServiceImpl implements ProfileService {
 
     private final UserRepository userRepository;
 
+    private final UserService userService;
+
     private final ModelMapper modelMapper;
 
-    public ProfileServiceImpl(ProfileRepository profileRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public ProfileServiceImpl(ProfileRepository profileRepository, UserRepository userRepository, UserService userService, ModelMapper modelMapper) {
         this.profileRepository = profileRepository;
         this.userRepository = userRepository;
+        this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
@@ -65,8 +70,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Boolean removeFollower(Long id, Long profileId) {
-        Profile profile = checkAndGetProfileById(id);
+    public Boolean removeFollower(Long profileId) {
+        Profile profile = checkAndGetProfileById(userService.getCurrentUser().getId());
         Profile profile2 = checkAndGetProfileById(profileId);
 
         profile2.removeFollowing(profile);
@@ -81,8 +86,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Boolean follow(Long id, Long followUserId) {
-        Profile profile = checkAndGetProfileById(id);
+    public Boolean follow(Long followUserId) {
+        Profile profile = checkAndGetProfileById(userService.getCurrentUser().getId());
         Profile profile2 = checkAndGetProfileById(followUserId);
 
         profile.addFollowing(profile2);
@@ -91,8 +96,8 @@ public class ProfileServiceImpl implements ProfileService {
     }
 
     @Override
-    public Boolean unfollow(Long id, Long unfollowUserId) {
-        Profile profile = checkAndGetProfileById(id);
+    public Boolean unfollow(Long unfollowUserId) {
+        Profile profile = checkAndGetProfileById(userService.getCurrentUser().getId());
         Profile profile2 = checkAndGetProfileById(unfollowUserId);
 
         profile.removeFollowing(profile2);

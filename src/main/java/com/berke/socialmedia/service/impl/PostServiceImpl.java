@@ -4,11 +4,16 @@ import com.berke.socialmedia.dao.PostRepository;
 import com.berke.socialmedia.dao.ProfileRepository;
 import com.berke.socialmedia.dao.entity.Post;
 import com.berke.socialmedia.dao.entity.Profile;
+import com.berke.socialmedia.dao.entity.User;
 import com.berke.socialmedia.dto.PostDto;
 import com.berke.socialmedia.exception.AlreadyExistsException;
 import com.berke.socialmedia.exception.NotFoundException;
 import com.berke.socialmedia.service.PostService;
+import com.berke.socialmedia.service.UserService;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.Arrays;
@@ -22,11 +27,14 @@ public class PostServiceImpl implements PostService {
 
     private final ProfileRepository profileRepository;
 
+    private final UserService userService;
+
     private final ModelMapper modelMapper;
 
-    public PostServiceImpl(PostRepository postRepository, ProfileRepository profileRepository, ModelMapper modelMapper) {
+    public PostServiceImpl(PostRepository postRepository, ProfileRepository profileRepository, UserService userService, ModelMapper modelMapper) {
         this.postRepository = postRepository;
         this.profileRepository = profileRepository;
+        this.userService = userService;
         this.modelMapper = modelMapper;
     }
 
@@ -46,7 +54,7 @@ public class PostServiceImpl implements PostService {
 
     @Override
     public PostDto create(PostDto postDto) {
-        Profile profile = checkAndGetProfileById(postDto.getProfileId());
+        Profile profile = checkAndGetProfileById(userService.getCurrentUser().getId());
 
         Post post = modelMapper.map(postDto, Post.class);
         post.setId(0L);

@@ -14,7 +14,10 @@ import com.berke.socialmedia.exception.NotFoundException;
 import com.berke.socialmedia.service.UserService;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -170,12 +173,7 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         return user.get();
     }
 
-    private User checkAndGetUserByUsername(String username){
-        User user = userRepository.findByUsername(username);
-        if(user == null)
-            throw new NotFoundException("User", "No user found with this username");
-        return user;
-    }
+
     private void checkAndThrowErrorIfUserExists(Long id){
         Optional<User> user = userRepository.findById(id);
         if(user.isPresent())
@@ -187,5 +185,25 @@ public class UserServiceImpl implements UserService, UserDetailsService {
         if(!role.isPresent())
             throw new NotFoundException("Role", "No role found with this id");
         return role.get();
+    }
+    @Override
+    public User checkAndGetUserByUsername(String username){
+        User user = userRepository.findByUsername(username);
+        if(user == null)
+            throw new NotFoundException("User", "No user found with this username");
+        return user;
+    }
+    @Override
+    public User getCurrentUser(){
+
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (!(authentication instanceof AnonymousAuthenticationToken)) {
+            String currentUserName = authentication.getName();
+            return checkAndGetUserByUsername(currentUserName);
+        }else{
+            throw new RuntimeException("No User");
+        }
+
     }
 }

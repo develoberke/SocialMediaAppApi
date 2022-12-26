@@ -75,7 +75,7 @@ public class JwtTokenUtil {
         return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
-    public UsernamePasswordAuthenticationToken getAuthentication(final String token,final Authentication authentication,
+    public UsernamePasswordAuthenticationToken getAuthentication(final String token,
                                                                  UserDetails userDetails){
 
         final JwtParser jwtParser = Jwts.parser().setSigningKey(SIGNING_KEY);

@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin
@@ -70,4 +71,5 @@ public class UserController {
         userService.removeRoleById(id, roleId);
         return ResponseEntity.noContent().build();
     }
+
 }

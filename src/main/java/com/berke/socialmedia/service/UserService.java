@@ -1,5 +1,6 @@
 package com.berke.socialmedia.service;
 
+import com.berke.socialmedia.dao.entity.User;
 import com.berke.socialmedia.dto.UserDto;
 import com.berke.socialmedia.dto.UserRegisterDto;
 
@@ -24,4 +25,8 @@ public interface UserService {
     UserDto addRoleById(Long userId, Long roleId);
 
     Boolean removeRoleById(Long userId, Long roleId);
+
+    User checkAndGetUserByUsername(String username);
+
+    User getCurrentUser();
 }
