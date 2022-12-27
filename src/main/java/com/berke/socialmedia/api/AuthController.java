@@ -1,9 +1,9 @@
 package com.berke.socialmedia.api;
 
 import com.berke.socialmedia.dto.JwtResponse;
-import com.berke.socialmedia.dto.LoginUserDto;
-import com.berke.socialmedia.dto.UserDto;
-import com.berke.socialmedia.dto.UserRegisterDto;
+import com.berke.socialmedia.dto.user.LoginUserDto;
+import com.berke.socialmedia.dto.user.UserDto;
+import com.berke.socialmedia.dto.user.UserRegisterDto;
 import com.berke.socialmedia.security.JwtTokenUtil;
 import com.berke.socialmedia.service.UserService;
 import com.berke.socialmedia.util.ApiPaths;

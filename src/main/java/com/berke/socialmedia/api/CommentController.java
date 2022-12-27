@@ -1,6 +1,7 @@
 package com.berke.socialmedia.api;
 
-import com.berke.socialmedia.dto.CommentDto;
+import com.berke.socialmedia.dto.comment.CommentDto;
+import com.berke.socialmedia.dto.comment.CommentRequestDto;
 import com.berke.socialmedia.service.CommentService;
 import com.berke.socialmedia.util.ApiPaths;
 import org.springframework.http.HttpStatus;
@@ -32,18 +33,18 @@ public class CommentController {
     }
 
     @PostMapping
-    public ResponseEntity<CommentDto> create(@RequestBody CommentDto commentDto){
-        return new ResponseEntity<>(commentService.create(commentDto), HttpStatus.CREATED);
+    public ResponseEntity<CommentDto> create(@RequestBody CommentRequestDto commentRequestDto){
+        return new ResponseEntity<>(commentService.create(commentRequestDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<CommentDto> update(@PathVariable Long id, @RequestBody CommentDto commentDto){
-        commentService.update(id, commentDto);
+    public ResponseEntity<CommentDto> update(@PathVariable Long id, @RequestBody CommentRequestDto commentRequestDto){
+        commentService.update(id, commentRequestDto);
         return ResponseEntity.noContent().build();
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam Long id){
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> delete(@PathVariable Long id){
         commentService.delete(id);
         return ResponseEntity.noContent().build();
     }

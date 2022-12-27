@@ -1,6 +1,6 @@
 package com.berke.socialmedia.api;
 
-import com.berke.socialmedia.dto.LikeDto;
+import com.berke.socialmedia.dto.like.LikeDto;
 import com.berke.socialmedia.service.LikeService;
 import com.berke.socialmedia.util.ApiPaths;
 import org.springframework.http.HttpStatus;
@@ -35,8 +35,8 @@ public class LikeController {
         return new ResponseEntity<>(likeService.create( postId), HttpStatus.CREATED);
     }
 
-    @DeleteMapping
-    public ResponseEntity<Void> delete(@RequestParam Long postId){
+    @DeleteMapping("/{postId}")
+    public ResponseEntity<Void> delete(@PathVariable Long postId){
         likeService.delete(postId);
         return ResponseEntity.noContent().build();
     }

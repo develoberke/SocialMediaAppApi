@@ -1,14 +1,14 @@
 package com.berke.socialmedia.api;
 
 
-import com.berke.socialmedia.dto.UserDto;
+import com.berke.socialmedia.dto.user.UserDto;
+import com.berke.socialmedia.dto.user.UserRequestDto;
 import com.berke.socialmedia.service.UserService;
 import com.berke.socialmedia.util.ApiPaths;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.security.Principal;
 import java.util.List;
 
 @CrossOrigin
@@ -54,8 +54,8 @@ public class UserController {
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserDto userDto){
-        userService.update(id, userDto);
+    public ResponseEntity<UserDto> update(@PathVariable Long id, @RequestBody UserRequestDto userRequestDto){
+        userService.update(id, userRequestDto);
         return ResponseEntity.noContent().build();
     }
 

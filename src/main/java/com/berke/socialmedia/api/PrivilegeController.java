@@ -1,7 +1,8 @@
 package com.berke.socialmedia.api;
 
 
-import com.berke.socialmedia.dto.PrivilegeDto;
+import com.berke.socialmedia.dto.privilege.PrivilegeDto;
+import com.berke.socialmedia.dto.privilege.PrivilegeRequestDto;
 import com.berke.socialmedia.service.PrivilegeService;
 import com.berke.socialmedia.util.ApiPaths;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -37,13 +38,13 @@ public class PrivilegeController {
     }
 
     @PostMapping
-    public ResponseEntity<PrivilegeDto> save(@RequestBody PrivilegeDto privilegeDto){
-        return new ResponseEntity<>(privilegeService.save(privilegeDto), HttpStatus.CREATED);
+    public ResponseEntity<PrivilegeDto> save(@RequestBody PrivilegeRequestDto privilegeRequestDto){
+        return new ResponseEntity<>(privilegeService.save(privilegeRequestDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public  ResponseEntity<PrivilegeDto> update(@PathVariable Long id, @RequestBody PrivilegeDto privilegeDto){
-        privilegeService.update(id, privilegeDto);
+    public  ResponseEntity<PrivilegeDto> update(@PathVariable Long id, @RequestBody PrivilegeRequestDto privilegeRequestDto){
+        privilegeService.update(id, privilegeRequestDto);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,12 +1,11 @@
 package com.berke.socialmedia.api;
 
 
-import com.berke.socialmedia.dto.PostDto;
-import com.berke.socialmedia.dto.ProfileDto;
+import com.berke.socialmedia.dto.profile.ProfileDto;
+import com.berke.socialmedia.dto.profile.ProfileRequestDto;
 import com.berke.socialmedia.service.ProfileService;
 import com.berke.socialmedia.util.ApiPaths;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,8 +32,8 @@ public class ProfileController {
         return ResponseEntity.ok(profileService.getById(id));
     }
     @PutMapping("/{id}")
-    public ResponseEntity<ProfileDto> update(@PathVariable Long id, @RequestBody ProfileDto profileDto){
-        profileService.update(id, profileDto);
+    public ResponseEntity<ProfileDto> update(@PathVariable Long id, @RequestBody ProfileRequestDto profileRequestDto){
+        profileService.update(id, profileRequestDto);
         return ResponseEntity.noContent().build();
     }
 

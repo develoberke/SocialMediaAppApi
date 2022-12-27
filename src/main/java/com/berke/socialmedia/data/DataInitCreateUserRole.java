@@ -1,13 +1,13 @@
 package com.berke.socialmedia.data;
 
-import com.berke.socialmedia.dao.PrivilegeRepository;
-import com.berke.socialmedia.dao.ProfileRepository;
-import com.berke.socialmedia.dao.RoleRepository;
-import com.berke.socialmedia.dao.UserRepository;
-import com.berke.socialmedia.dao.entity.Privilege;
-import com.berke.socialmedia.dao.entity.Profile;
-import com.berke.socialmedia.dao.entity.Role;
-import com.berke.socialmedia.dao.entity.User;
+import com.berke.socialmedia.repository.PrivilegeRepository;
+import com.berke.socialmedia.repository.ProfileRepository;
+import com.berke.socialmedia.repository.RoleRepository;
+import com.berke.socialmedia.repository.UserRepository;
+import com.berke.socialmedia.entity.Privilege;
+import com.berke.socialmedia.entity.Profile;
+import com.berke.socialmedia.entity.Role;
+import com.berke.socialmedia.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.core.annotation.Order;
@@ -53,7 +53,7 @@ public class DataInitCreateUserRole implements CommandLineRunner {
         User dbAdminUser = userRepository.findByUsername("admin");
         User dbMemberUser = userRepository.findByUsername("member");
         User dbBothUser = userRepository.findByUsername("both");
-        User dbNoneUser = userRepository.findByUsername("noneRole");
+        User dbNoneUser = userRepository.findByUsername("none");
 
         Profile profile1 = Profile.builder().firstName("Berke").lastName("Yıldırım").level(1L).build();
         Profile profile2 = Profile.builder().firstName("Berke2").lastName("Yıldırım").level(1L).build();

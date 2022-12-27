@@ -1,6 +1,7 @@
 package com.berke.socialmedia.api;
 
-import com.berke.socialmedia.dto.PostDto;
+import com.berke.socialmedia.dto.post.PostDto;
+import com.berke.socialmedia.dto.post.PostRequestDto;
 import com.berke.socialmedia.service.PostService;
 import com.berke.socialmedia.util.ApiPaths;
 import org.springframework.http.HttpStatus;
@@ -31,13 +32,13 @@ public class PostController {
     }
 
     @PostMapping
-    public ResponseEntity<PostDto> create(@RequestBody PostDto postDto){
-        return new ResponseEntity<PostDto>(postService.create(postDto), HttpStatus.CREATED);
+    public ResponseEntity<PostDto> create(@RequestBody PostRequestDto postRequestDto){
+        return new ResponseEntity<PostDto>(postService.create(postRequestDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PostDto> update(@PathVariable Long id, @RequestBody PostDto postDto){
-        postService.update(id, postDto);
+    public ResponseEntity<PostDto> update(@PathVariable Long id, @RequestBody PostRequestDto postRequestDto){
+        postService.update(id, postRequestDto);
         return ResponseEntity.noContent().build();
     }
 

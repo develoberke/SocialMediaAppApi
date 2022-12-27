@@ -1,7 +1,8 @@
 package com.berke.socialmedia.api;
 
 
-import com.berke.socialmedia.dto.RoleDto;
+import com.berke.socialmedia.dto.role.RoleDto;
+import com.berke.socialmedia.dto.role.RoleRequestDto;
 import com.berke.socialmedia.service.RoleService;
 import com.berke.socialmedia.util.ApiPaths;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
@@ -35,13 +36,13 @@ public class RoleController {
     }
 
     @PostMapping
-    public ResponseEntity<RoleDto> save(@RequestBody RoleDto roleDto){
-        return new ResponseEntity<>(roleService.save(roleDto), HttpStatus.CREATED);
+    public ResponseEntity<RoleDto> save(@RequestBody RoleRequestDto roleRequestDto){
+        return new ResponseEntity<>(roleService.save(roleRequestDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<RoleDto> update(@PathVariable Long id, @RequestBody RoleDto roleDto){
-        roleService.update(id,roleDto);
+    public ResponseEntity<RoleDto> update(@PathVariable Long id, @RequestBody RoleRequestDto roleRequestDto){
+        roleService.update(id,roleRequestDto);
         return ResponseEntity.noContent().build();
     }
     @DeleteMapping("/{id}")

@@ -1,10 +1,9 @@
 package com.berke.socialmedia.security;
 
-import com.berke.socialmedia.dao.RoleRepository;
-import com.berke.socialmedia.dao.entity.Role;
+import com.berke.socialmedia.repository.RoleRepository;
+import com.berke.socialmedia.entity.Role;
 import io.jsonwebtoken.*;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Component;
