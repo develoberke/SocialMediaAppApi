@@ -73,6 +73,10 @@ public class UserService implements UserDetailsService {
         return privileges;
     }
 
+    public UserDto getCurrentUserDto(){
+        return modelMapper.map(getCurrentUser(), UserDto.class);
+    }
+
 
     public List<UserDto> getAll() {
         return Arrays.asList(modelMapper.map(userRepository.findAll(),UserDto[].class));
@@ -189,7 +193,7 @@ public class UserService implements UserDetailsService {
             String currentUserName = authentication.getName();
             return checkAndGetUserByUsername(currentUserName);
         }else{
-            throw new RuntimeException("No User");
+            throw new RuntimeException("No authentication user");
         }
 
     }

@@ -25,6 +25,11 @@ public class UserController {
         this.userService = userService;
     }
 
+    @GetMapping("/getcurrentuser")
+    public ResponseEntity<UserDto> getCurrentUser(){
+        return ResponseEntity.ok(userService.getCurrentUserDto());
+    }
+
     @GetMapping
     public ResponseEntity<List<UserDto>> getAll(){
         return ResponseEntity.ok(userService.getAll());
@@ -34,6 +39,8 @@ public class UserController {
     public ResponseEntity<UserDto> getById(@PathVariable(name = "id") Long id){
         return ResponseEntity.ok(userService.getById(id));
     }
+
+
 
     /*
     @PostMapping
